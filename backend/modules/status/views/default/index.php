@@ -29,13 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'name',
             ['attribute' => 'status', 
-                            
-                                    
-                                
+                'headerOptions' => ['class'=>'visible-lg', 'style'=>'width:20px;'],
+                'contentOptions' => ['class'=>'visible-lg', 'style'=>'width:20px;']
+                
             ],
-            
             'element.name',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
         'rowOptions' => //esto muestra el registro de color rojo si está desactivado
