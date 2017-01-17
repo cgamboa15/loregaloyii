@@ -44,5 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                             return ['class'=>''];
                                         
                                     },  
+        
     ]); ?>
 </div>
