@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\status\models\search\statusSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Statuses';
+$this->title = 'Estados de registros y Elementos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="status-index">
@@ -16,20 +16,35 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Status', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Estado', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            ['attribute' => 'id', 
+                            'headerOptions' => ['style'=>'width:20px;']
+            ],
+            
             'name',
-            'status',
+            ['attribute' => 'status', 
+                            
+                                    
+                                
+            ],
+            
             'element.name',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
+        'rowOptions' => //esto muestra el registro de color rojo si está desactivado
+                                function ($model, $key, $index, $column){
+                                        if( !$model['status'] == '1' )
+                                            return ['class'=>'danger'];
+                                        else
+                                            return ['class'=>''];
+                                        
+                                    },  
     ]); ?>
 </div>
