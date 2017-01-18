@@ -4,6 +4,8 @@ namespace backend\modules\category\controllers;
 
 use Yii;
 use common\models\Category;
+use common\models\Status;
+use common\models\Element;
 use backend\modules\category\models\search\categorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -64,12 +66,25 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-
+        
+        $fatherList = Category::find()->select('id, name')->where( ['statusid' =>Category::STATUS_ACTIVE])->all();
+        $fatherList = \yii\helpers\ArrayHelper::map($fatherList, 'id', 'name');
+        
+        $statusList = Status::find()->select(['id', 'name'])->where(['elementid' => Element::FOR_RECORDS])->all();
+        $statusList = \yii\helpers\ArrayHelper::map($statusList, 'id', 'name');
+        
+        //var_dump($fatherList);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            if($model->getErrors())
+            {
+               // var_dump ($model->getErrors()); die();
+            }
             return $this->render('create', [
                 'model' => $model,
+                'fatherList' => $fatherList,
+                'statusList' => $statusList,
             ]);
         }
     }

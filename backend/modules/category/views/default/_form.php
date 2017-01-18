@@ -16,13 +16,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'desc')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'statusid')->textInput() ?>
+    <?= $form->field($model, 'statusid')->dropDownList( $statusList, ['prompt'=>'Seleccione Estado'] ) ?>
 
-    <?= $form->field($model, 'fatherid')->textInput() ?>
+    <?= $form->field($model, 'fatherid')->dropDownList( $fatherList ) ?>
+    
+    <?= $form->field($model, 'image')->fileInput( ) ?>
+    
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

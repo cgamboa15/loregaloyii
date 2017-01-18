@@ -3,6 +3,11 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use \yii\behaviors\SluggableBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "q5vp2_category".
@@ -22,6 +27,7 @@ use Yii;
  */
 class Category extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 9;
     /**
      * @inheritdoc
      */
@@ -36,7 +42,7 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'desc', 'fatherid', 'created_at', 'updated_at'], 'required'],
+            [['name', 'desc', 'fatherid', 'statusid', 'image'], 'required'],
             [['statusid', 'fatherid'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 250],
@@ -49,16 +55,39 @@ class Category extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function behaviors()
+    {
+        return [
+                 
+                 [
+                     'class' => BlameableBehavior::className(),
+                     'createdByAttribute' => 'created_by',
+                     'updatedByAttribute' => 'updated_by',
+                 ],
+                 'timestamp' => [
+                     'class' => 'yii\behaviors\TimestampBehavior',
+                     'attributes' => [
+                         ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                         ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                     ],
+                     'value' => new Expression('NOW()'),
+                 ],
+             ];
+    }
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
             'id' => Yii::t('app', 'ID'),
             'name' => Yii::t('app', 'Name'),
             'desc' => Yii::t('app', 'Desc'),
-            'statusid' => Yii::t('app', 'Statusid'),
-            'fatherid' => Yii::t('app', 'Fatherid'),
+            'status.name' => Yii::t('app', 'Statusid'),
+            'father.name' => Yii::t('app', 'Father name'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
+            'image' => Yii::t('app', ' Imagen'),
         ];
     }
 
