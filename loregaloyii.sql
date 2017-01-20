@@ -16,20 +16,40 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`loregaloyii` /*!40100 DEFAULT CHARACTER
 
 USE `loregaloyii`;
 
+/*Table structure for table `menu` */
+
+DROP TABLE IF EXISTS `menu`;
+
+CREATE TABLE `menu` (
+  `menu_id` int(11) NOT NULL AUTO_INCREMENT,
+  `menu` text NOT NULL,
+  `menu_name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`menu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Data for the table `menu` */
+
+insert  into `menu`(`menu_id`,`menu`,`menu_name`) values 
+(1,'{\n    \"left\": [\n        {\n            \"label\": \"Home\",\n            \"url\": \"home\"\n        },\n        {\n            \"label\": \"Contáctenos\",\n            \"url\": \"contactenos\"\n        }\n    ],\n    \"right\": []\n}',NULL),
+(2,'{\n    \"left\": [],\n    \"right\": [\n        {\n            \"label\": \"Menus\",\n            \"url\": \"index.php?r=menu/creator\"\n        },\n        {\n            \"label\": \"Estados\",\n            \"url\": \"index.php?r=status\"\n        },\n        {\n            \"label\": \"Elementos de Estados\",\n            \"url\": \"index.php?r=element\"\n        },\n        {\n            \"label\": \"Usuarios\",\n            \"url\": \"index.php?r=user\"\n        }\n    ]\n}',NULL),
+(3,'{\"left\":[],\"right\":[]}','Prueba');
+
 /*Table structure for table `q5vp2_application` */
 
 DROP TABLE IF EXISTS `q5vp2_application`;
 
 CREATE TABLE `q5vp2_application` (
-  `productId` int(11) NOT NULL,
+  `itemid` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `status` tinyint(4) DEFAULT NULL,
+  `statusid` tinyint(2) DEFAULT NULL,
   `createdate` datetime DEFAULT NULL,
   `description` text,
-  PRIMARY KEY (`productId`,`userId`),
+  PRIMARY KEY (`itemid`,`userId`),
   KEY `FK_q5vp2_product_applications` (`userId`),
+  KEY `statusid` (`statusid`),
   CONSTRAINT `FK_q5vp2_product_applications` FOREIGN KEY (`userId`) REFERENCES `q5vp2_user` (`id`),
-  CONSTRAINT `FK_q5vp2_product_applications_prod` FOREIGN KEY (`productId`) REFERENCES `q5vp2_item` (`id`)
+  CONSTRAINT `FK_q5vp2_product_applications_prod` FOREIGN KEY (`itemid`) REFERENCES `q5vp2_item` (`id`),
+  CONSTRAINT `q5vp2_application_ibfk_1` FOREIGN KEY (`statusid`) REFERENCES `q5vp2_status` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='En esta tabla se guardan las solicitudes de los usuarios a';
 
 /*Data for the table `q5vp2_application` */
@@ -39,19 +59,30 @@ CREATE TABLE `q5vp2_application` (
 DROP TABLE IF EXISTS `q5vp2_category`;
 
 CREATE TABLE `q5vp2_category` (
-  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `id` int(3) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `desc` varchar(255) NOT NULL,
   `statusid` tinyint(2) DEFAULT NULL,
-  `fatherid` int(2) NOT NULL,
+  `fatherid` int(3) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `created_by` datetime DEFAULT NULL,
+  `updated_by` datetime DEFAULT NULL,
+  `image` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_item_status` (`statusid`),
+  KEY `fatherid` (`fatherid`),
   CONSTRAINT `fk_category_status` FOREIGN KEY (`statusid`) REFERENCES `q5vp2_status` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 /*Data for the table `q5vp2_category` */
+
+insert  into `q5vp2_category`(`id`,`name`,`desc`,`statusid`,`fatherid`,`created_at`,`updated_at`,`created_by`,`updated_by`,`image`) values 
+(1,'Sin categoría','Sin categoría, es una categoría principal',9,0,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,NULL,NULL),
+(4,'Hogar','Artículos que pertenecenn a la categoría del Hogar',9,1,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,NULL,NULL),
+(5,'Electródomésticos','Artículos que pertenecenn a la subcategoría Electródomésticos',9,4,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL,NULL,NULL),
+(6,'Calzado','Artículos de tipo calzado, zapatos, tenis, sandalias..',9,1,'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',NULL),
+(7,'Cocinas','Utensilios de cocina',9,4,'0000-00-00 00:00:00','2017-01-20 11:00:59','0000-00-00 00:00:00','0000-00-00 00:00:00','');
 
 /*Table structure for table `q5vp2_city` */
 
@@ -1318,22 +1349,6 @@ insert  into `q5vp2_itemcolor`(`id`,`name`,`status`) values
 (8,'Verde','1'),
 (9,'Varios Colores','1');
 
-/*Table structure for table `q5vp2_menu` */
-
-DROP TABLE IF EXISTS `q5vp2_menu`;
-
-CREATE TABLE `q5vp2_menu` (
-  `menu_id` int(11) NOT NULL AUTO_INCREMENT,
-  `menu` text NOT NULL,
-  PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
-/*Data for the table `q5vp2_menu` */
-
-insert  into `q5vp2_menu`(`menu_id`,`menu`) values 
-(1,'{\n    \"left\": [\n        {\n            \"label\": \"Home\",\n            \"url\": \"home\"\n        },\n        {\n            \"label\": \"Contáctenos\",\n            \"url\": \"contactenos\"\n        }\n    ],\n    \"right\": []\n}'),
-(2,'{\n    \"left\": [],\n    \"right\": [\n        {\n            \"label\": \"Menus\",\n            \"url\": \"index.php?r=menu/creator\"\n        },\n        {\n            \"label\": \"Estados\",\n            \"url\": \"index.php?r=status\"\n        },\n        {\n            \"label\": \"Elementos de Estados\",\n            \"url\": \"index.php?r=element\"\n        },\n        {\n            \"label\": \"Usuarios\",\n            \"url\": \"index.php?r=user\"\n        }\n    ]\n}');
-
 /*Table structure for table `q5vp2_migration` */
 
 DROP TABLE IF EXISTS `q5vp2_migration`;
@@ -1348,7 +1363,9 @@ CREATE TABLE `q5vp2_migration` (
 
 insert  into `q5vp2_migration`(`version`,`apply_time`) values 
 ('m000000_000000_base',1484170941),
-('m151216_173850_create_menu_table',1484170944);
+('m151216_173850_create_menu_table',1484170944),
+('m170101_000000_create_menu_table',1484931773),
+('m170101_000001_humanized_menu_name',1484931775);
 
 /*Table structure for table `q5vp2_provincy` */
 
@@ -1415,7 +1432,7 @@ CREATE TABLE `q5vp2_status` (
   PRIMARY KEY (`id`),
   KEY `FK_q5vp2_product_status_info` (`elementId`),
   CONSTRAINT `FK_q5vp2_product_status_info` FOREIGN KEY (`elementId`) REFERENCES `q5vp2_element` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `q5vp2_status` */
 
@@ -1423,7 +1440,7 @@ insert  into `q5vp2_status`(`id`,`name`,`status`,`elementId`) values
 (1,'Usado','1',4),
 (2,'Nuevo','1',4),
 (3,'Semi-usado','1',4),
-(4,'Niño','1',1),
+(4,'Niño','0',1),
 (5,'Niña','1',1),
 (6,'Hombre','1',1),
 (7,'Mujer','1',1),
@@ -1472,8 +1489,8 @@ CREATE TABLE `q5vp2_user` (
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `statusid` tinyint(2) NOT NULL DEFAULT '1',
-  `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
   `sendmail` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
@@ -1485,12 +1502,13 @@ CREATE TABLE `q5vp2_user` (
   CONSTRAINT `q5vp2_user_ibfk_1` FOREIGN KEY (`statusid`) REFERENCES `q5vp2_status` (`id`),
   CONSTRAINT `q5vp2_user_ibfk_2` FOREIGN KEY (`cityid`) REFERENCES `q5vp2_city` (`id`),
   CONSTRAINT `q5vp2_user_ibfk_3` FOREIGN KEY (`sendmail`) REFERENCES `q5vp2_status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `q5vp2_user` */
 
 insert  into `q5vp2_user`(`id`,`username`,`phone`,`cityid`,`genre`,`typeid`,`auth_key`,`password_hash`,`password_reset_token`,`email`,`statusid`,`created_at`,`updated_at`,`sendmail`) values 
-(2,'cgamboa','3012530504',149,'M',NULL,'LM2DgAyqhlC4ZOwRwaVXN_bMgD511NUQ','$2y$13$Iyu/.yRxIpeVtIifGP80CerwwOlPpVJcg7e0A2wSjOv9O2IddYaNu','MKYwqjGK1tIURw7kR3v0nIlyZp26mCHQ_1484598793','carlosgamboa15@hotmail.com',9,1484171166,1484599067,NULL);
+(2,'cgamboa','3012530504',149,'M',NULL,'LM2DgAyqhlC4ZOwRwaVXN_bMgD511NUQ','$2y$13$Iyu/.yRxIpeVtIifGP80CerwwOlPpVJcg7e0A2wSjOv9O2IddYaNu','MKYwqjGK1tIURw7kR3v0nIlyZp26mCHQ_1484598793','carlosgamboa15@hotmail.com',9,'0000-00-00 00:00:00','0000-00-00 00:00:00',NULL),
+(3,'pacopaco','123456',149,'M',1,'','',NULL,'paco@gmail.com',9,'2017-01-20 11:15:34','2017-01-20 11:23:19',1);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

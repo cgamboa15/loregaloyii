@@ -459,12 +459,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/pceuropa/yii2-menu.git",
-                "reference": "66583f72c6e0a4d2f08ace843cf6c9826eabce8d"
+                "reference": "6c1aea44218c3b10c08e83b6b98b6bd9b646ca92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pceuropa/yii2-menu/zipball/66583f72c6e0a4d2f08ace843cf6c9826eabce8d",
-                "reference": "66583f72c6e0a4d2f08ace843cf6c9826eabce8d",
+                "url": "https://api.github.com/repos/pceuropa/yii2-menu/zipball/6c1aea44218c3b10c08e83b6b98b6bd9b646ca92",
+                "reference": "6c1aea44218c3b10c08e83b6b98b6bd9b646ca92",
                 "shasum": ""
             },
             "type": "yii2-extension",
@@ -494,7 +494,7 @@
                 "menu builder",
                 "yii2"
             ],
-            "time": "2017-01-14 13:10:38"
+            "time": "2017-01-20 18:53:41"
         },
         {
             "name": "swiftmailer/swiftmailer",
