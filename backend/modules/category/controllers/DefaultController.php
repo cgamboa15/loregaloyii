@@ -98,12 +98,19 @@ class DefaultController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+         $statusList = Status::find()->select(['id', 'name'])->where(['elementid' => Element::FOR_RECORDS])->all();
+        $statusList = \yii\helpers\ArrayHelper::map($statusList, 'id', 'name');
 
+         $fatherList = Category::find()->select('id, name')->where( ['statusid' =>Category::STATUS_ACTIVE])->all();
+        $fatherList = \yii\helpers\ArrayHelper::map($fatherList, 'id', 'name');
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'fatherList' => $fatherList,
+                'statusList' => $statusList,
             ]);
         }
     }

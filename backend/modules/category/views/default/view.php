@@ -1,5 +1,5 @@
 <?php
-
+use kartik\datecontrol\DateControl;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -33,9 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'desc',
             'status.name',
             'father.name',
-            'created_at',
-            'updated_at',
+            'created_at:datetime:'.Yii::t('app', 'Created at'),
+            'updated_at:datetime:'.Yii::t('app', 'Updated at'),
         ],
+        
     ]) ?>
 
 </div>

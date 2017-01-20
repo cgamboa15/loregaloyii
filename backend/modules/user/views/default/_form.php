@@ -11,7 +11,7 @@ use \yii\helpers\Url;
 if(!is_numeric($model->cityid))
 {
     $selectedProvincy = null;
-    $cityList="";//inicialmente no debe mostrar nada
+    $cityList= array();//inicialmente no debe mostrar nada
 }else{
     $selectedProvincy = $model->city->provincyid;
 }
@@ -46,10 +46,8 @@ if(!is_numeric($model->cityid))
 
     <?= $form->field($model, 'statusid')->dropDownList($statusList) ?>
     
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
+     <?= $form->field($model,'sendmail')->dropDownList(['1' =>'si', '0' => 'No']) ?>
+    
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Actualizar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

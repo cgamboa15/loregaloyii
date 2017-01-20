@@ -8,7 +8,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
-
+use yii\db\Expression;
 
 /**
  * This is the model class for table "q5vp2_user".
@@ -52,14 +52,13 @@ class User  extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'email', 'created_at', 'updated_at'], 'required'],
-            [['cityid', 'typeid', 'statusid', 'created_at', 'updated_at'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
+            [['username', 'email'], 'required'],
+            [['cityid', 'typeid', 'statusid', 'sendmail'], 'integer'],
+            [['username', 'email'], 'string', 'max' => 255],
             [['phone', 'auth_key'], 'string', 'max' => 32],
             [['genre'], 'string', 'max' => 2],
             [['username'], 'unique'],
             [['email'], 'unique'],
-            [['password_reset_token'], 'unique'],
             [['statusid'], 'exist', 'skipOnError' => true, 'targetClass' => Status::className(), 'targetAttribute' => ['statusid' => 'id']],
             [['cityid'], 'exist', 'skipOnError' => true, 'targetClass' => City::className(), 'targetAttribute' => ['cityid' => 'id']],
             ['statusid', 'default', 'value' => self::STATUS_ACTIVE],
@@ -84,8 +83,8 @@ class User  extends ActiveRecord implements IdentityInterface
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
             'status.name' => 'Estado',
-            'created_at' => 'Creado el',
-            'updated_at' => 'Actualizado el',
+            'sendmail' => Yii::t('app', 'sendmail'),
+            
         ];
     }
     
@@ -226,7 +225,15 @@ class User  extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+           
+                 'timestamp' => [
+                     'class' => 'yii\behaviors\TimestampBehavior',
+                     'attributes' => [
+                         ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                         ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                     ],
+                     'value' => new Expression('NOW()'),
+                 ],
         ];
     }
     /**

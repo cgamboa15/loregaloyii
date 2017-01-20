@@ -42,8 +42,9 @@ class Category extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'desc', 'fatherid', 'statusid', 'image'], 'required'],
+            [['name', 'desc', 'fatherid', 'statusid'], 'required'],
             [['statusid', 'fatherid'], 'integer'],
+            [['image'], 'file'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 250],
             [['desc'], 'string', 'max' => 255],
@@ -87,7 +88,7 @@ class Category extends \yii\db\ActiveRecord
             'father.name' => Yii::t('app', 'Father name'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
-            'image' => Yii::t('app', ' Imagen'),
+            'image' => Yii::t('app', ' Image'),
         ];
     }
 
